@@ -97,9 +97,12 @@ li {
         }
         input{
             display: block;
-            margin: 0.2rem auto 1.2rem auto;
+            margin: 0.5rem auto 0.3rem auto;
             padding: 0.3rem 0;
             text-align: center;
+        }
+        .error{
+            color: red;
         }
     }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import * as yup from 'yup';
+import firebase from '../../services/firebase'
 
 import { NavLink } from 'react-router-dom';
 import withForm from '../../hocs/formManager';
@@ -14,7 +15,8 @@ class Register extends React.Component {
 
     submitHandler = () => {
         this.props.runValidations()
-            .then(formData => console.log(formData))
+            .then(formData => firebase.register(formData.email, formData.password, formData.username)) //firebase.register(formData.email, formData.password, formData.username)
+            .catch((error) => error.message)
     }
 
     getFirstControlError = name => {
@@ -30,7 +32,7 @@ class Register extends React.Component {
 
         return (
             <div className="form-wrapper">
-                <h2>Login</h2>
+                <h2>Register</h2>
                 <form >
                     <label htmlFor="Username">
                         Username
@@ -90,24 +92,26 @@ const initialFormState = {
     rePassword: ''
 }
 
-const schema = yup.object({
+const schema = yup.object().shape({
     username: yup.string('Username should be string')
         .required('Username is required')
         .min(4, 'Username should be at least 4 chars'),
 
     email: yup.string('E-mail should be string')
-        .required('E-mail is required')
-        .email(),
+        .required('E-mail is required'),
 
     password: yup.string('Password should be string')
         .required('Password is required')
         .min(6, 'Password should be at least 6 chars'),
 
     rePassword: yup.string('Password should be string')
-        .oneOf([yup.ref('password'), null], 'Passwords don\'t match')
-        .required('Password is required')
-        .min(6, 'Password should be at least 6 chars')
-
+        .when("password", {
+            is: val => (val && val.length > 0 ? true : false),
+            then: yup.string().oneOf(
+                [yup.ref("password")],
+                "Both password need to be the same"
+            )
+        })
 })
 
 export default withForm(Register, initialFormState, schema)

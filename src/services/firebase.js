@@ -28,10 +28,8 @@ class Firebase {
         return this.auth.signOut()
     }
 
-     register(email, password, name) {
-        return  this.auth.createUserWithEmailAndPassword(email, password).then(this.auth.currentUser.updateProfile({
-            displayName: name
-        }))
+     register(username, email, password) {
+        return  this.auth.createUserWithEmailAndPassword(email, password)
         
     }
 }

@@ -4,9 +4,11 @@ import firebase from '../../services/firebase'
 
 import { NavLink } from 'react-router-dom';
 import withForm from '../../hocs/formManager';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
-class Register extends React.Component {
+class Login extends React.Component {
 
 
     emailOnChangeHandler = this.props.controlChangeHandlerFactory('email');
@@ -15,7 +17,11 @@ class Register extends React.Component {
     submitHandler = () => {
         this.props.runValidations()
             .then(formData => firebase.login(formData.email, formData.password)) //firebase.register(formData.email, formData.password, formData.username)
-            .catch((error) => error.message)
+            .then(() => {
+                this.props.history.push('/')
+                toast.success("Logged in success.")
+            })
+            .catch((error) => toast.warn("Invalid Username or Password!"))
     }
 
     getFirstControlError = name => {
@@ -29,7 +35,7 @@ class Register extends React.Component {
 
         return (
             <div className="form-wrapper">
-                <h2>Register</h2>
+                <h2>Login</h2>
                 <form >
                     <label htmlFor="email">
                         E-mail
@@ -53,7 +59,7 @@ class Register extends React.Component {
                         />
                         {passwordError && <div className="error">{passwordError}</div>}
                     </label>
-
+                     {emailError && <div className="error">{emailError}</div>}
                     <button className="button" type="button" onClick={this.submitHandler}>Login</button>
                 </form>
                 <div className="paragraph">You don't have an account? <NavLink to="/register" className="button">Register</NavLink></div>            </div>
@@ -76,4 +82,4 @@ const schema = yup.object().shape({
         .min(6, 'Password should be at least 6 chars'),
 })
 
-export default withForm(Register, initialFormState, schema)
+export default withForm(Login, initialFormState, schema)

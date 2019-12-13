@@ -1,9 +1,10 @@
-import React from 'react';
-import * as yup from 'yup';
+import React from 'react'
+import * as yup from 'yup'
 import firebase from '../../services/firebase'
 
-import { NavLink } from 'react-router-dom';
-import withForm from '../../hocs/formManager';
+import { NavLink } from 'react-router-dom'
+import withForm from '../../hocs/formManager'
+import { toast } from 'react-toastify'
 
 
 class Register extends React.Component {
@@ -15,8 +16,12 @@ class Register extends React.Component {
 
     submitHandler = () => {
         this.props.runValidations()
-            .then(formData => firebase.register(formData.email, formData.password, formData.username)) //firebase.register(formData.email, formData.password, formData.username)
-            .catch((error) => error.message)
+            .then(formData => firebase.register(formData.username, formData.email, formData.password, ))
+            .then((data) => {
+                this.props.history.push('/')
+                toast.success("New accout successfully created.")
+            })
+            .catch((error) => toast.warn("Something went wrong!"))
     }
 
     getFirstControlError = name => {

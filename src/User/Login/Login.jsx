@@ -2,7 +2,7 @@ import React from 'react';
 import * as yup from 'yup';
 import firebase from '../../services/firebase'
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import withForm from '../../hocs/formManager';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +18,7 @@ class Login extends React.Component {
         this.props.runValidations()
             .then(formData => firebase.login(formData.email, formData.password)) //firebase.register(formData.email, formData.password, formData.username)
             .then(() => {
+                sessionStorage.setItem('authorized', true)
                 this.props.history.push('/')
                 toast.success("Logged in success.")
             })
@@ -34,6 +35,7 @@ class Login extends React.Component {
         const passwordError = this.getFirstControlError('password');
 
         return (
+            sessionStorage.getItem('authorized') ? <Redirect to="/profile"/> :
             <div className="form-wrapper">
                 <h2>Login</h2>
                 <form >

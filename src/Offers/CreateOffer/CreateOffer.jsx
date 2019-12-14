@@ -2,7 +2,7 @@ import React from 'react'
 import * as yup from 'yup'
 import firebase from '../../services/firebase'
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom'
 import withForm from '../../hocs/formManager'
 import { toast } from 'react-toastify'
 
@@ -44,6 +44,7 @@ class CreateOffer extends React.Component {
         const contactError = this.getFirstControlError('contact');
 
         return (
+            sessionStorage.getItem('authorized') ?
             <div className="form-wrapper">
                 <h2>Create Offer</h2>
                 <form>
@@ -127,7 +128,7 @@ class CreateOffer extends React.Component {
                     <button className="button" type="button" onClick={this.submitHandler}>CreateOffer</button>
                 </form>
                 <div className="paragraph">Go back to the home page <NavLink to="/" className="button">Cancel</NavLink></div>
-            </div>
+            </div> : <Redirect to="/login" />
         )
     }
 }

@@ -15,6 +15,7 @@ class Logout extends Component {
     UNSAFE_componentWillMount(){
         firebase.auth().signOut().then((user) => {
             this.setState({redirect: true})
+            sessionStorage.clear('authorized')
         }).then(toast.info("Logged out."))
     }
 

@@ -15,9 +15,8 @@ import Profile from './User/Profile'
 import { ToastContainer } from 'react-toastify'
 import DetailedOffer from './Offers/DetailedOffer/DetailedOffer'
 
-
 class App extends React.Component {
-  constructor(){
+  constructor() {
     super()
     this.state = {
       authenticated: false,
@@ -26,9 +25,9 @@ class App extends React.Component {
     }
   }
 
-  UNSAFE_componentWillMount(){
+  UNSAFE_componentWillMount() {
     this.removeAuthListener = firebase.auth().onAuthStateChanged((user) => {
-      if(user){
+      if (user) {
         this.setState({
           authenticated: true,
           loading: false,
@@ -36,37 +35,37 @@ class App extends React.Component {
         })
       } else {
         this.setState({
-          authenticated:false,
+          authenticated: false,
           loading: false
         })
       }
     })
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.removeAuthListener()
   }
 
   render() {
-    if(this.state.loading === true){
+    if (this.state.loading === true) {
       return <Loading />
     }
     return (
       <BrowserRouter>
         <div className="App">
           <ToastContainer />
-          <Navigation authenticated={this.state.authenticated}/>
+          <Navigation authenticated={this.state.authenticated} />
           <div className="Container">
-              <Switch>
-                <Route path="/" exact component={Offers}/>
-                <Route path="/profile" children={<Profile email={this.state.email}/>}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/logout" component={Logout}/>
-                <Route path="/register" component={Register}/>
-                <Route path="/create-offer" component={CreateOffer}/>
-                <Route path="/offer/:offerId" component={DetailedOffer} />
-                <Route path="*" component={NotFound}/>
-              </Switch>
+            <Switch>
+              <Route path="/" exact component={Offers} />
+              <Route path="/profile" children={<Profile email={this.state.email} />} />
+              <Route path="/login" component={Login} />
+              <Route path="/logout" component={Logout} />
+              <Route path="/register" component={Register} />
+              <Route path="/create-offer" component={CreateOffer} />
+              <Route path="/offer/:offerId" component={ DetailedOffer}/>
+              <Route path="*" component={NotFound} />
+            </Switch>
           </div>
         </div>
       </BrowserRouter>

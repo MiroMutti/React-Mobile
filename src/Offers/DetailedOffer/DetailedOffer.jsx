@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import firebase from '../../services/firebase'
-import Loading from '../../shared/Loading/Loading';
+import Loading from '../../shared/Loading/Loading'
+import { Redirect } from 'react-router-dom'
 
 
 const DetailedOffer = ({ match }) => {
@@ -20,17 +21,18 @@ const DetailedOffer = ({ match }) => {
                     setOffer(doc.data())
                 }).catch((error) => console.log(error))
             setLoading(false)
+
         }
         fetchOffer()
     }, [offerId])
 
     return (
-
+        sessionStorage.getItem('authorized') ?
         <article className='offer'>
             {loading && <Loading />}
             {offer && <div className="details-wrapper">
                 <div className="left-side">
-                    <img src={offer.imageUrl} alt="loading" />
+                    <img src={offer.imageUrl} alt="loading" style={{width:"60%", boxShadow:"0px 0px 16px 1px rgba(0,0,0,0.75)"}}/>
                 </div>
                 <div className="right-side">
                     <h3>Brand: {offer.brand}</h3>
@@ -41,8 +43,8 @@ const DetailedOffer = ({ match }) => {
                     <p>Contact: {offer.contact}</p>
                 </div>
             </div>}
-        </article>
+        </article> : <Redirect to="/login"/>
     )
 }
 
-export default DetailedOffer;
+export default DetailedOffer

@@ -32,6 +32,22 @@ class Firebase {
         return  this.auth.createUserWithEmailAndPassword(email, password)
         
     }
+    
+    createOffer(brand, model, year, imageUrl, mileage, price, contact) {
+        return this.db.collection('offers').add({
+            brand: brand,
+            model: model,
+            year: year,
+            imageUrl: imageUrl,
+            mileage: mileage,
+            price: price,
+            contact: contact
+        })
+    }
+
+    getUserEmail(){
+        return this.auth.getEmail()
+    }
 }
 
 export default new Firebase()

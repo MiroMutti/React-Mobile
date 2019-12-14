@@ -13,12 +13,7 @@ import Register from './User/Register/Register'
 import Logout from './User/Logout/Logout'
 import Profile from './User/Profile'
 import { ToastContainer } from 'react-toastify'
-
-
-
-
-
-
+import DetailedOffer from './Offers/DetailedOffer/DetailedOffer'
 
 
 class App extends React.Component {
@@ -26,7 +21,8 @@ class App extends React.Component {
     super()
     this.state = {
       authenticated: false,
-      loading: true
+      loading: true,
+      email: ''
     }
   }
 
@@ -35,7 +31,8 @@ class App extends React.Component {
       if(user){
         this.setState({
           authenticated: true,
-          loading: false
+          loading: false,
+          email: user.email
         })
       } else {
         this.setState({
@@ -62,11 +59,12 @@ class App extends React.Component {
           <div className="Container">
               <Switch>
                 <Route path="/" exact component={Offers}/>
-                <Route path="/create-offer" component={CreateOffer}/>
-                <Route path="/profile" component={Profile}/>
+                <Route path="/profile" children={<Profile email={this.state.email}/>}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/logout" component={Logout}/>
                 <Route path="/register" component={Register}/>
+                <Route path="/create-offer" component={CreateOffer}/>
+                <Route path="/offer/:offerId" component={DetailedOffer} />
                 <Route path="*" component={NotFound}/>
               </Switch>
           </div>

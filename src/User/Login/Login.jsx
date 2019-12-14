@@ -4,7 +4,7 @@ import firebase from '../../services/firebase'
 
 import { NavLink } from 'react-router-dom';
 import withForm from '../../hocs/formManager';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
